@@ -82,11 +82,11 @@ def get_time_filter():
         (str) time_filter - method user input ('month', 'day', 'both', or 'none')
     """
 
-    prompt = "\nWould you like to filter the data by 'month', 'day', 'both' or 'none'? - "
-    time_filter = input(prompt).lower()
+    msg = "\nWould you like to filter the data by 'month', 'day', 'both' or 'none'? - "
+    time_filter = input(msg).lower()
     while time_filter not in ['month', 'day', 'both', 'none']:
-        prompt = "Invalid input! Make sure you enter 'month', 'day', 'both' or 'none'. - "
-        time_filter = input(prompt).lower()
+        msg = "Invalid input! Make sure you enter 'month', 'day', 'both' or 'none'. - "
+        time_filter = input(msg).lower()
 
     return time_filter
 
