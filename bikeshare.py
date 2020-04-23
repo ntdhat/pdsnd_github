@@ -12,25 +12,25 @@ DAYS_OF_WEEK = ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', '
 def display_raw_data(df, rows=5):
     """
     Ask user for displaying a few rows of raw data from city data.
-    
+
     Args:
         (DataFrame) df - city raw data
         (int) rows - (optional) number of rows to be display each time
     """
     print()
-    
+
     should_display = ''
     while should_display not in ['yes', 'no']:
         prompt = 'Would you like to see some raw data? (Yes/No) - '
         should_display = input(prompt).lower()
-    
+
     current = 0
     while (should_display == 'yes') and (current < len(df)):
         print(df[current : current+rows])
         current += rows
-        
+
         print()
-        
+
         should_display = ''
         while should_display not in ['yes', 'no']:
             prompt = 'Would you like to see more raw data? (Yes/No) - '
@@ -40,17 +40,17 @@ def display_raw_data(df, rows=5):
 def get_city():
     """
     Get user input for city (Chicago, New York city, Washington).
-    
+
     Return:
         (str) city - name of the city
     """
-    
-    prompt = '\nWhich data you want to see, Chicago, New York city, or Washington? - '
-    city = input(prompt).lower()
+
+    msg = '\nWhich data you want to see, Chicago, New York city, or Washington? - '
+    city = input(msg).lower()
     while city not in CITY_DATA:
-        prompt = 'Invalid city\'s name! Enter Chicago, New York city, or Washington. - '
-        city = input(prompt).lower()
-    
+        msg = 'Invalid city\'s name! Enter Chicago, New York city, or Washington. - '
+        city = input(msg).lower()
+
     return city
 
 def get_filters():
@@ -61,9 +61,9 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
-    
+
     time_filter = get_time_filter()
-        
+
     month = day = 'all'
     if time_filter == 'month' or time_filter == 'both':
         month = get_month_filter()
@@ -73,55 +73,55 @@ def get_filters():
     print('-'*40)
     return month, day
 
-        
+
 def get_time_filter():
     """
     Get user input for filter method (by month, day of week, or none)
-    
+
     Return:
         (str) time_filter - method user input ('month', 'day', 'both', or 'none')
     """
-    
+
     prompt = "\nWould you like to filter the data by 'month', 'day', 'both' or 'none'? - "
     time_filter = input(prompt).lower()
     while time_filter not in ['month', 'day', 'both', 'none']:
         prompt = "Invalid input! Make sure you enter 'month', 'day', 'both' or 'none'. - "
         time_filter = input(prompt).lower()
-    
+
     return time_filter
 
-    
+
 def get_month_filter():
     """
     Get user input for month (all, january, february, ... , june)
-    
+
     Return:
         (str) month - name of the month (in lower case)
     """
-    
+
     prompt = '\nWhich month: January, February, March, April, May, or June? - '
     month = input(prompt).lower()
     while month not in MONTHS:
         prompt = 'Invalid input! Please enter January, February, March, April, May, or June. - '
         month = input(prompt).lower()
-    
+
     return month
 
-    
+
 def get_day_filter():
     """
     Get user input for day of week (all, monday, tuesday, ... sunday)
-    
+
     Return:
         (str) day - name of the day of week (in lower case)
     """
-    
+
     prompt = '\nEnter the day of week: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday. - '
     day = input(prompt).lower()
     while day not in DAYS_OF_WEEK:
         prompt = 'Invalid input! Please enter Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday. - '
         day = input(prompt).lower()
-    
+
     return day
 
 
@@ -134,7 +134,7 @@ def load_data(city):
     Returns:
         (DataFrame) df - containing city data filtered by month and day
     """
-    
+
     # load data file into a dataframe
     df = None
     try:
@@ -143,7 +143,7 @@ def load_data(city):
         # handle loading file errors
         print(f"File not found. Could't load '{CITY_DATA[city]}'")
         print('-'*40)
-    
+
     return df
 
 
@@ -159,7 +159,7 @@ def prepare_data(df, month, day):
     Returns:
         (DataFrame) df - City data filtered by month and day.
     """
-    
+
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
@@ -172,27 +172,27 @@ def prepare_data(df, month, day):
     if month != 'all':
         # use the index of the months list to get the corresponding int
         month_index = MONTHS.index(month)
-    
+
         # filter by month to create the new dataframe
         df = df[df['month'] == month_index]
-        
+
 
     # filter by day of week if applicable
     if day != 'all':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
-    
+
     return df
 
 
 def time_stats(df):
     """
     Displays statistics on the most frequent times of travel.
-    
+
     Args:
         (DataFrame) df - city data
     """
-    
+
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
@@ -218,7 +218,7 @@ def time_stats(df):
 def station_stats(df):
     """
     Displays statistics on the most popular stations and trip.
-    
+
     Args:
         (DataFrame) df - city data
     """
@@ -249,7 +249,7 @@ def station_stats(df):
 def trip_duration_stats(df):
     """
     Displays statistics on the total and average trip duration.
-    
+
     Args:
         (DataFrame) df - city data
     """
@@ -270,7 +270,7 @@ def trip_duration_stats(df):
 def user_stats(df):
     """
     Displays statistics on bikeshare users.
-    
+
     Args:
         (DataFrame) df - city data
     """
@@ -301,12 +301,12 @@ def user_stats(df):
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-    
+
 
 def should_start_over():
     """
     Get user input whether we should start the program over.
-    
+
     Return:
         (boolean) - True for should starting over and False for should not
     """
@@ -317,25 +317,25 @@ def main():
     while True:
         print('-'*40)
         print('\nHELLO! LET\'S EXPLORE SOME US BIKESHARE DATA!\n')
-        
+
         city = get_city()
         df = load_data(city)
         if df is None:
             if should_start_over() == False:
                 break
             continue
-        
+
         display_raw_data(df)
-            
+
         month, day = get_filters()
-    
+
         df = prepare_data(df, month, day)
-    
+
         time_stats(df)
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
-    
+
         if should_start_over() == False:
             break
 
